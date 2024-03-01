@@ -10,6 +10,7 @@
 
 
 from thumbor.loaders import LoaderResult
+from thumbor.utils import logger
 
 from thumbor_aws.config import Config
 from thumbor_aws.s3_client import S3Client
@@ -85,6 +86,8 @@ async def load(context, path):
 
     norm_path = normalize_path(client.configuration["root_path"], real_path)
     result = LoaderResult()
+
+    logger.info("Loading %s from bucket %s", norm_path, bucket)
 
     status_code, body, last_modified = await client.get_data(
         bucket, norm_path, expiration=None
